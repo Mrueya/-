@@ -16,15 +16,24 @@ class Lexer {
 private:
     HashTable hashTable;
 
-    void getNextToken(vector<char>& alphabet, string& s, bool flag) {
+    void getNextToken(vector<char>& alphabet, string& s, bool& flag, int& count) {
 		if (s != "") {
-			if (flag)
-				if (dfa(countStatesStringExpr, alphabet, finalStatesStringExpr, transitFunctionStringExpr).isAccept(s)) {
-				hashTable.insert(Token(TokenType::STRING_EXPR, s));
-				flag = 0;
-				s.clear();
-				return;
+			if (flag) {
+				if (count != 2) {
+					hashTable.insert(Token(TokenType::ERROR, s));
+					flag = 0;
+					count = 0;
+					s.clear();
+					return;
 				}
+				if (dfa(countStatesStringExpr, alphabet, finalStatesStringExpr, transitFunctionStringExpr).isAccept(s)) {
+					hashTable.insert(Token(TokenType::STRING_EXPR, s));
+					flag = 0;
+					count = 0;
+					s.clear();
+					return;
+				}
+			}
 			if (dfa(countStatesKeyWord, alphabet, finalStatesKeyWord, transitFunctionKeyWord).isAccept(s)) {
 				hashTable.insert(Token(TokenType::KEYWORD, s));
 				s.clear();
@@ -107,54 +116,59 @@ public:
 		string alp;
 		Alphabet(alphabet, alp);
 
-		string str; char temp; 
-		while (!cin.eof()) {
-			bool f = 0;
-			cin.get(temp);
-			if (temp == '"') {
-				f = 1;
-				getNextToken(alphabet, str, f);
-			}
-			else if (temp == ',' || temp == '.') {
-				getNextToken(alphabet, str, f);
+		if (cin.eof()) {
+			hashTable.insert(Token(TokenType::ERROR, "FILE"));
+			return;
+		}
+		string str; char temp; 	bool f = 0; int c = 0;
+		while (cin.get(temp)) {
+			if (temp == ',') {
+				getNextToken(alphabet, str, f, c);
 				string u = "";
 				u += temp;
 				hashTable.insert(Token(TokenType::SEPARATORS, u));
 			}
 			else if (temp == ';') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 				hashTable.insert(Token(TokenType::SEPARATORS, ";"));
 			}
 			else if (temp == '{') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 				hashTable.insert(Token(TokenType::SEPARATORS, "{"));
 			}
 			else if (temp == '}') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 				hashTable.insert(Token(TokenType::SEPARATORS, "}"));
 			}
 			else if (temp == '(') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 				hashTable.insert(Token(TokenType::SEPARATORS, "("));
 			}
 			else if (temp == ')') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 				hashTable.insert(Token(TokenType::SEPARATORS, ")"));
 			}
 			else if (temp == ' ') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 			}
 			else if (temp == '\n') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 			}
 			else if (temp == '+' || temp == '-' || temp == '=') {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 				string o = "";
 				o += temp;
 				hashTable.insert(Token(TokenType::OPERATOR, o));
 			}
+			else if (temp == '"' || f == 1) {
+				if (temp == '"') {
+					c+=1;
+				}
+				f = 1;
+				str += temp;
+			}
 			else if (!IsValidChar(temp, alp)) {
-				getNextToken(alphabet, str, f);
+				getNextToken(alphabet, str, f, c);
 				string e = "";
 				e += temp;
 				hashTable.insert(Token(TokenType::ERROR, e));
@@ -163,7 +177,9 @@ public:
 				str += temp;
 			}
 		}
-
+		if (!str.empty()) {
+			getNextToken(alphabet, str, f, c);
+		}
 	}
 	HashTable getHashTable()
 	{

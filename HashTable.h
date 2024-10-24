@@ -22,7 +22,7 @@ private:
 
     //Хеш-функция
     size_t hashFunction(const std::string& key) const {
-        unsigned long hash = 313;
+        unsigned long hash = 317;
         int c;
         const char* s = key.c_str();
 
@@ -43,14 +43,19 @@ private:
             newTable[i] = nullptr;
         }
 
-        for (size_t i = 0; i < size; ++i) {
+        size_t oldSize = size;
+        size = newSize;
+
+        for (size_t i = 0; i < oldSize; ++i) {
             Node* current = table[i];
             while (current) {
                 Node* next = current->next;
-                size_t newIndex = hashFunction(current->token.getLexem()) % newSize;
-
-                current->next = newTable[newIndex];
+                size_t newIndex = hashFunction(current->token.getLexem());
+                while (newTable[newIndex] != nullptr) {
+                    newIndex = (newIndex + 1) % newSize;
+                }
                 newTable[newIndex] = current;
+                current->next = nullptr;
 
                 current = next;
             }
@@ -58,7 +63,6 @@ private:
 
         delete[] table;
         table = newTable;
-        size = newSize;
     }
 
     // Функция для проверки, является ли число простым
@@ -74,7 +78,7 @@ private:
 public:
 
     HashTable(){
-        size = 139;
+        size = 11;
         table = new Node * [size];
         for (size_t i = 0; i < size; ++i) {
             table[i] = nullptr;
@@ -84,21 +88,19 @@ public:
     ~HashTable() {}
 
     void insert(const Token& token) {
-        if (count >= size * 0.5)
-        {
+        if (count >= size * 0.5) {
             rehash();
         }
         size_t index = hashFunction(token.value);
-        Node* current = table[index];
-        while (current != nullptr) {
-            if (current->token.value == token.value) {
+        while (table[index] != nullptr) {
+            if (table[index]->token.value == token.value) {
                 return;
             }
-            current = current->next;
+            index = (index + 1) % size;
         }
+
         // Если элемент не найден, добавляем новый
         Node* newNode = new Node(token);
-        newNode->next = table[index];
         table[index] = newNode;
         count++;
 
@@ -120,6 +122,7 @@ public:
         ofstream outputFile("output.txt");
         if (!outputFile.is_open()) {
             cerr << "Ошибка открытия файла." << endl;
+            return;
         }
 
         outputFile << "Тип лексемы | Лексема    | Индекс в хеш-таблице." << endl;
@@ -128,7 +131,7 @@ public:
             while (current) {
                 if (current->token.getLexemType() == "!ERROR!") {
                     outputFile << setw(11) << current->token.getLexemType() << " | "
-                        << setw(10) << current->token.value << " | " << endl;
+                        << setw(10) << current->token.value << " | " << i << endl;
                     current = current->next;
                 }
                 else {

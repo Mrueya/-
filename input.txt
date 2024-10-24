@@ -1,4 +1,4 @@
-int main (){
+main (){
     int one, Two, four4;
     one = 1;
     Two = one - 3;
@@ -7,3 +7,10 @@ int main (){
     first = "Hello";
     Third = second + first;
 }
+"hhh
+"
+"x"
+return
+returny
+return6
+k8
