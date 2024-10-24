@@ -1,0 +1,23 @@
+Тип лексемы | Лексема    | Индекс в хеш-таблице.
+         ID |        Two | 5
+STRING_EXPR |      Hello | 19
+         ID |      first | 24
+ SEPARATORS |          { | 27
+ SEPARATORS |          } | 29
+    !ERROR! |      four4 | 
+         ID |      Third | 37
+         ID |        one | 50
+         ID |     second | 63
+    KEYWORD |        int | 64
+ SEPARATORS |          ( | 83
+STRING_EXPR |     world! | 84
+ SEPARATORS |          ) | 84
+   OPERATOR |          + | 86
+ SEPARATORS |          , | 87
+   OPERATOR |          - | 88
+    KEYWORD |     string | 90
+      CONST |          1 | 92
+      CONST |          3 | 94
+   FUNCTION |       main | 95
+ SEPARATORS |          ; | 102
+   OPERATOR |          = | 104

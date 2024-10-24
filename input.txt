@@ -1,0 +1,9 @@
+int main (){
+    int one, Two, four4;
+    one = 1;
+    Two = one - 3;
+    string first, Third;
+    string second = "world!";
+    first = "Hello";
+    Third = second + first;
+}
