@@ -7,8 +7,6 @@ using namespace std;
 
 enum class TokenType {
     FUNCTION, //MAIN
-    BEGIN, //{
-    END, //}
     ID, //VAR
     CONST, //NUM
     KEYWORD, //INT
@@ -46,8 +44,6 @@ private:
     string tokenTypeToString(TokenType t) const {
         switch (t) {
         case TokenType::FUNCTION: return "FUNCTION";
-        case TokenType::BEGIN: return "BEGIN";
-        case TokenType::END: return "END";
         case TokenType::ID: return "ID";
         case TokenType::CONST: return "CONST";
         case TokenType::KEYWORD: return "KEYWORD";

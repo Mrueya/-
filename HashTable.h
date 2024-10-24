@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Token.h"
 #include <iostream>
 #include <iomanip>
@@ -78,7 +77,7 @@ private:
 public:
 
     HashTable(){
-        size = 11;
+        size = 101;
         table = new Node * [size];
         for (size_t i = 0; i < size; ++i) {
             table[i] = nullptr;
@@ -131,7 +130,7 @@ public:
             while (current) {
                 if (current->token.getLexemType() == "!ERROR!") {
                     outputFile << setw(11) << current->token.getLexemType() << " | "
-                        << setw(10) << current->token.value << " | " << i << endl;
+                        << setw(10) << current->token.value << " | " << endl;
                     current = current->next;
                 }
                 else {
