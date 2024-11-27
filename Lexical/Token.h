@@ -1,6 +1,6 @@
 #ifndef TOKEN_H
 #define TOKEN_H
-//Описываем лексему и ее тип
+//ГЋГЇГЁГ±Г»ГўГ ГҐГ¬ Г«ГҐГЄГ±ГҐГ¬Гі ГЁ ГҐГҐ ГІГЁГЇ
 #include <string>
 
 using namespace std;
@@ -14,7 +14,7 @@ enum class TokenType {
     ERROR,
     TYPE, //
     OPERATOR,//+ - =
-    STRING_EXPR, //Строка
+    STRING_EXPR, //Г‘ГІГ°Г®ГЄГ 
 };
 
 class Token {
