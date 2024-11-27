@@ -19,7 +19,7 @@ private:
     size_t size = 0;
     int count = 0;
 
-    //Хеш-функция
+    //Г•ГҐГё-ГґГіГ­ГЄГ¶ГЁГї
     size_t hashFunction(const std::string& key) const {
         unsigned long hash = 317;
         int c;
@@ -64,7 +64,7 @@ private:
         table = newTable;
     }
 
-    // Функция для проверки, является ли число простым
+    // Г”ГіГ­ГЄГ¶ГЁГї Г¤Г«Гї ГЇГ°Г®ГўГҐГ°ГЄГЁ, ГїГўГ«ГїГҐГІГ±Гї Г«ГЁ Г·ГЁГ±Г«Г® ГЇГ°Г®Г±ГІГ»Г¬
     bool isPrime(size_t n) const {
         if (n <= 1) return false;
         for (size_t i = 2; i * i <= n; ++i) {
@@ -98,7 +98,7 @@ public:
             index = (index + 1) % size;
         }
 
-        // Если элемент не найден, добавляем новый
+        // Г…Г±Г«ГЁ ГЅГ«ГҐГ¬ГҐГ­ГІ Г­ГҐ Г­Г Г©Г¤ГҐГ­, Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г­Г®ГўГ»Г©
         Node* newNode = new Node(token);
         table[index] = newNode;
         count++;
@@ -120,11 +120,11 @@ public:
     void print() const {
         ofstream outputFile("output.txt");
         if (!outputFile.is_open()) {
-            cerr << "Ошибка открытия файла." << endl;
+            cerr << "ГЋГёГЁГЎГЄГ  Г®ГІГЄГ°Г»ГІГЁГї ГґГ Г©Г«Г ." << endl;
             return;
         }
 
-        outputFile << "Тип лексемы | Лексема    | Индекс в хеш-таблице." << endl;
+        outputFile << "Г’ГЁГЇ Г«ГҐГЄГ±ГҐГ¬Г» | Г‹ГҐГЄГ±ГҐГ¬Г     | Г€Г­Г¤ГҐГЄГ± Гў ГµГҐГё-ГІГ ГЎГ«ГЁГ¶ГҐ." << endl;
         for (size_t i = 0; i < size; ++i) {
             Node* current = table[i];
             while (current) {
